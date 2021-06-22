@@ -8,6 +8,12 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
     @participant = Participant.new
+    @couples = []
+    if @event.locked
+      @event.gifts.each do |gift|
+        @couples << [Participant.find(gift.sender_id), Participant.find(gift.receiver_id)]
+      end
+    end
   end
 
 
@@ -40,7 +46,7 @@ class EventsController < ApplicationController
   private
 
   def santa_couples(array)
-    array.to_a.shuffle!.unshift array.last
+    array.to_a.shuffle!.unshift array.to_a.last
     array.each_cons(2).to_a
   end
 

@@ -2,9 +2,11 @@ class ParticipantsController < ApplicationController
 
   def create
     @participant = Participant.new(participant_params)
-    @participant.event_id = params[:id]
+    @event = Event.find(params[:event_id])
+    @participant.event = @event
+
     if @participant.save
-      redirect_to even_path(@event)
+      redirect_to event_path(@event)
     end
   end
 

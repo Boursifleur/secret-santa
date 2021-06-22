@@ -1,21 +1,31 @@
 <div class="container h-600 mt-5">
   <div class=row>
     <div class="col-6">
-      <h3> <%= @event.name %></h3>
-      <% @event.participants.each do |p| %>
-        <%= p.name %>
+      <% if @event.locked %>
+        <h3> <%= @event.name %></h3>
+        <p>Le tirage au sort a été effectué, les emails ont été envoyé. Joyeux Nöel les amis ! </p>
+      <% else %>
+        <h3> <%= @event.name %></h3>
+        <% @event.participants.each do |p| %>
+          <%= p.name %>
+        <% end %>
+        <%= link_to "Sorting", event_sorting_participants_path(@event) %>
       <% end %>
-      <%= link_to "Sorting", event_sorting_participants_path(@event) %>
-
     </div>
     <div class="col-6">
+      <% if @event.locked %>
+        <% @couples.each do |couple| %>
+        <p><%= couple[0].name %> will be <%=couple[1].name  %>'s santa</p>
+        <% end %>
+
+      <% else %>
       <h3>Invite a new participant </h3>
-        <%= simple_form_for @participant do |f| %>
+        <%= simple_form_for [@event, @participant] do |f| %>
           <%= f.input :name %>
           <%= f.input :mail %>
           <%= f.button :submit %>
         <% end %>
+      <% end %>
     </div>
-
   </div>
 </div>

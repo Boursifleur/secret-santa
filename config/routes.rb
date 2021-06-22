@@ -3,9 +3,10 @@ Rails.application.routes.draw do
   root to: 'pages#home'
 
   resources :events, only: [:new, :create, :index, :show, :destroy, :update] do
+    resources :participants, only: [:create]
     get 'starting_santa_sorting', to: 'events#starting_santa_sorting', as: 'sorting_participants'
   end
-  resources :participants, only: [:index, :new, :create, :destroy]
+
 
 
 
