@@ -28,7 +28,7 @@ class EventsController < ApplicationController
    def starting_santa_sorting
     @event = Event.find(params[:event_id])
     if @event.has_enough_participants?
-      @participants = @event.participants
+      @participants = Participants.where()
       @couples = santa_couples(@participants)
       @event.locked = true
       @event.save
@@ -41,13 +41,14 @@ class EventsController < ApplicationController
       end
       redirect_to event_path(@event)
     end
+    raise
   end
 
   private
 
   def santa_couples(array)
-    array.to_a.shuffle!.unshift array.to_a.last
-    array.each_cons(2).to_a
+    randomize = array.to_a.shuffle!.unshift array.to_a.last
+    randomize.each_cons(2).to_a
   end
 
   def event_params
