@@ -8,17 +8,17 @@
         <h3> <%= @event.name%> (<%= @event.price %>€)</h3>
         <% if @event.has_no_participant? %>
           <p>Commencez à ajouter des participants à l'évènement ! </p>
+        <% end %>
           <p>L'évènement peut commencer à partir de 3 personnes</p>
           <p>Chacun recevra alors un mail lui indiquant à qui offrir son cadeau</p>
-        <% else %>
           <p> Liste des participants : </p>
           <% @event.participants.each do |p| %>
             <%= p.name %>
+            <br>
           <% end %>
           <% if @event.has_enough_participants? %>
-            <%= link_to "Tirage au sort", event_sorting_participants_path(@event),  class: "btn btn-primary" %>
+            <%= link_to "Tirage au sort", event_sorting_participants_path(@event),  class: "btn btn-primary mt-3" %>
           <% end %>
-        <% end %>
       <% end %>
     </div>
     <div class="col-6">
