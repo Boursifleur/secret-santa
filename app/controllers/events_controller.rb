@@ -28,27 +28,29 @@ class EventsController < ApplicationController
    def starting_santa_sorting
     @event = Event.find(params[:event_id])
     if @event.has_enough_participants?
-      @participants = Participants.where()
+      @participants = @event.participants.to_a
       @couples = santa_couples(@participants)
       @event.locked = true
       @event.save
       @couples.each do |couple|
-        Gift.create!(
+        Gift.create(
           sender_id: couple[0].id,
           receiver_id: couple[1].id,
           event_id: @event.id
         )
       end
+      @event.gifts.each do |gift|
+        ParticipantMailer.santa_sorting_mail(gift).deliver
+      end
       redirect_to event_path(@event)
     end
-    raise
   end
 
   private
 
   def santa_couples(array)
-    randomize = array.to_a.shuffle!.unshift array.to_a.last
-    randomize.each_cons(2).to_a
+    randomized_array = array.shuffle!.unshift array.last
+    randomized_array.each_cons(2).to_a
   end
 
   def event_params

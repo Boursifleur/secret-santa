@@ -2,14 +2,21 @@
   <div class=row>
     <div class="col-6">
       <% if @event.locked %>
-        <h3> <%= @event.name %></h3>
+        <h3> <%= @event.name%> (<%= @event.price %>€) </h3>
         <p>Le tirage au sort a été effectué, les emails ont été envoyé. Joyeux Nöel les amis ! </p>
       <% else %>
-        <h3> <%= @event.name %></h3>
+        <h3> <%= @event.name%> (<%= @event.price %>€)</h3>
+        <% if @event.has_no_participant? %>
+          <p>Commencez à ajouter des participants à l'évènement ! </p>
+          <p>L'évènement peut commencer à partir de 3 personnes</p>
+          <p>Chacun recevra alors un mail lui indiquant à qui offrir son cadeau</p>
+        <% end %>
         <% @event.participants.each do |p| %>
           <%= p.name %>
         <% end %>
-        <%= link_to "Sorting", event_sorting_participants_path(@event) %>
+        <% if @event.has_enough_participants? %>
+          <%= link_to "Sorting", event_sorting_participants_path(@event),  class: "btn btn-primary" %>
+        <% end %>
       <% end %>
     </div>
     <div class="col-6">
@@ -17,7 +24,6 @@
         <% @couples.each do |couple| %>
         <p><%= couple[0].name %> will be <%=couple[1].name  %>'s santa</p>
         <% end %>
-
       <% else %>
       <h3>Invite a new participant </h3>
         <%= simple_form_for [@event, @participant] do |f| %>
