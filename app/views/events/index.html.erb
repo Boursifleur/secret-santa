@@ -1,23 +1,21 @@
 <div class="container h-600 mt-5">
   <div class=row>
     <div class="col-6">
-      <h3>My events</h3>
+      <h3>Mes évènements</h3>
         <% @events.each do |event| %>
         <div class="card p-1 h-200 w-400 mt-3">
           <%= event.name %>
           <%= link_to " ", event_path(event), class: "cards-link"%>
         </div>
-
         <% end %>
     </div>
     <div class="col-6">
-      <h3>Create a new event</h3>
+      <h3> Nouvel évènement</h3>
       <%= simple_form_for @event do |f| %>
-        <%= f.input :name %>
-        <%= f.input :price %>
-        <%= f.button :submit, class: "btn btn-advice"%>
+        <%= f.input :name, label: "Nom de l'évènement"%>
+        <%= f.input :price, label: "Prix du cadeau"%>
+        <%= f.button :submit,"Créer", class: "btn btn-primary"%>
       <% end %>
     </div>
-
   </div>
 </div>

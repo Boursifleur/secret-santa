@@ -7,6 +7,9 @@ class ParticipantsController < ApplicationController
 
     if @participant.save
       redirect_to event_path(@event)
+    else
+      flash.now[:messages] = @participant.errors.full_messages[0]
+      redirect_to event_path(@event)
     end
   end
 

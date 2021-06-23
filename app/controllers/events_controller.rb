@@ -22,6 +22,9 @@ class EventsController < ApplicationController
     @event.user_id = current_user.id
     if @event.save
       redirect_to event_path(@event)
+    else
+      flash.now[:event] = @event.errors.full_messages[0]
+      redirect_to events_path
     end
   end
 
